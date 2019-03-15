@@ -3,6 +3,55 @@
 Take 30 minutes with your table choose a *resource* that your server contains data about. A resource will be something like 'books', 'users', 'episodes', or 'characters', something that your users will be performing CRUD actions on.
 
 1. Write out the 7 RESTful routes that correspond to the 4 CRUD actions.  Be sure to include the HTTP verb, the name of the route and the corresponding CRUD action.  
+ Resources: episodes
+
+ ### skip before action :verify_authenticity_token
+ ###Create
+ 
+ def new     #1. go to the create page
+ end
+ get '/episodes/new', to: 'episodes#new'
+
+ def create     #2.create a new episode
+   @create = Episode.create(params[:episode]) 
+ end
+ post '/episodes', to: 'episodes#index'
+
+
+### Read
+ def index # display all episodes
+   @episodes = Episode.all
+ end
+ get '/episodes', to:'episodes#index'
+
+ def show  # display a particular episode
+   @episode = Episode.find(params[:id])
+ end
+ get '/episodes/:id', to: 'episodes#show'
+
+### Update
+  def edit   #get to the edit page
+       @episode = Episode.find(params[:id])
+  end 
+  get '/episodes/:id/edit', to: 'episodes#edit'
+
+  def update  # update the particular episode
+       @episode = Episode.find(params[:id])
+       @episode.update(params[:episode])        # create another method to give attribute permission
+  end
+  patch '/episodes/:id', to: 'episodes#show'
+
+### Destroy
+  def delete
+    @episode = Episode.find(params[:id])
+    @episode.destroy
+  end
+  delete '/episodes/:id', to: 'episodes#index'
+
+### Permission method
+  def episodes_params
+     params.permit(episode: [:title, :duration])
+  end
 
    * What SQL (if applicable) would be fired in the controller actions for each of the routes?
    * Why might it be important that routes and resources have a conventional structure?
